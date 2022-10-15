@@ -6,7 +6,7 @@
 #    By: afrolova <afrolova@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/12 00:19:49 by afrolova          #+#    #+#              #
-#    Updated: 2022/10/14 23:30:41 by afrolova         ###   ########.fr        #
+#    Updated: 2022/10/16 01:00:36 by afrolova         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #COLORS
@@ -41,6 +41,8 @@ DIR_OBJ_CH = $(DIR_CH)/OBJ_CH
 
 DIR_LIBFT = $(DIR_SRCS)/Libft
 
+MAKEFILE = Makefile
+
 #LIBRARY
 
 LIBFT =	$(DIR_LIBFT)/libft.a
@@ -48,7 +50,7 @@ LIBFT =	$(DIR_LIBFT)/libft.a
 #HEADERS
 
 HEADER_LIBFT = $(DIR_LIBFT)/INC/libft.h
-HEADER_PS = $(DIR_INC)/push_swap.h
+HEADER_PS =	$(DIR_INC)/push_swap.h
 HEADER_CH = $(DIR_INC)/checker.h
 	
 #PUSH_SWAP FILES
@@ -90,20 +92,19 @@ OBJ_CH = $(addprefix $(DIR_OBJ_CH)/, $(FILES_CH:.c=.o))
 
 
 all:
-			@$(MAKE) -C $(DIR_LIBFT)
-			@$(MAKE) $(NAME)
+					@$(MAKE) -C $(DIR_LIBFT)
+					@$(MAKE) $(NAME)
 
 #Compiling Rules for PUSH_SWAP
 
-
-$(NAME)::	$(DIR_OBJ_PS) $(OBJ_PS) $(LIBFT) Makefile
-			@$(CC) $(CFLAGS) $(OBJ_PS) $(LIBFT) -o $(NAME)
-			@echo "$(BLUE)Compiling push_swap...$(END_COLOR)"
+$(NAME)::			$(DIR_OBJ_PS) $(OBJ_PS) 
+					@$(CC) $(CFLAGS) $(OBJ_PS) $(LIBFT) -o $(NAME)
+					@echo "$(BLUE)Compiling push_swap...$(END_COLOR)"
 
 $(NAME)::
-			@echo "$(GREEN)Push_Swap is Compiled!$(END_COLOR)"
+					@echo "$(GREEN)Push_Swap is Compiled!$(END_COLOR)"
 
-$(DIR_OBJ_PS)/%.o:	$(DIR_SRCS_PS)/%.c $(HEADER_PS)
+$(DIR_OBJ_PS)/%.o:	$(DIR_SRCS_PS)/%.c $(HEADER_PS) $(LIBFT) $(MAKEFILE)
 					@$(CC) $(CFLAGS) -I $(DIR_INC) -I $(DIR_LIBFT) -c $< -o $@
 					@echo "$(YELLOW)Compiling $<"
 
@@ -112,15 +113,18 @@ $(DIR_OBJ_PS):
 
 #Compiling Ruler for CHECKER
 
-bonus::		$(DIR_OBJ_CH) $(OBJ_CH) $(LIBFT) Makefile
-			@$(MAKE) -C $(DIR_LIBFT)
-			@$(CC) $(CFLAGS) $(OBJ_CH) $(LIBFT) -o $(CHECKER)
-			@echo "$(BLUE)Compiling checker...$(END_COLOR)"
+bonus:		
+					@$(MAKE) -C $(DIR_LIBFT)
+					@$(MAKE) $(CHECKER)
 
-bonus::
-			@echo "$(GREEN)Checker is COMPILED!$(END_COLOR)"
+$(CHECKER)::		$(DIR_OBJ_CH) $(OBJ_CH) 
+					@$(CC) $(CFLAGS) $(OBJ_CH) $(LIBFT) -o $(CHECKER)
+					@echo "$(BLUE)Compiling checker...$(END_COLOR)"
 
-$(DIR_OBJ_CH)/%.o:	$(DIR_SRCS_CH)/%.c $(HEADER_CH)
+$(CHECKER)::
+					@echo "$(GREEN)Checker is COMPILED!$(END_COLOR)"
+
+$(DIR_OBJ_CH)/%.o:	$(DIR_SRCS_CH)/%.c $(HEADER_CH) $(LIBFT) $(MAKEFILE)
 					@$(CC) $(CFLAGS) -I $(DIR_INC) -I $(DIR_LIBFT) -c $< -o $@
 					@echo "$(YELLOW)Compiling $<"
 
